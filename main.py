@@ -11,7 +11,7 @@ def dist(a, b):
     # Borrowed from
     # http://chaoxuprime.com/2011/11/a-solution-to-Instagram-engineering-challenge-the-unshredder-in-haskell
     d = 0.
-    for x, y in zip(a, b):
+    for i, (x, y) in enumerate(zip(a, b)):
         d += (abs(x[0]-y[0]) + abs(x[1]-y[1]) + abs(x[2]-y[2]))**0.25
     return d
 
@@ -26,16 +26,8 @@ def unshred(im, ordering):
 
 if __name__ == "__main__":
     im = Image.open("TokyoPanoramaShredded.png", "r")
-    # convert to XYZ
-    rgb2xyz = (
-            0.412453, 0.357580, 0.180423, 0,
-            0.212671, 0.715160, 0.072169, 0,
-            0.019334, 0.119193, 0.950227, 0 )
-    im1 = im.convert("RGB")
-    im2 = im1.convert("RGB", rgb2xyz)
-
     w, h = im.size
-    data = im2.getdata()
+    data = im.getdata()
     slices= []
 
     # Extract the slice edges
@@ -73,4 +65,3 @@ if __name__ == "__main__":
             slices.remove(right_slice)
 
     unshred(im, ordering)
-
